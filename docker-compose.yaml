@@ -1,0 +1,30 @@
+version: '3.9'
+networks:
+  internal:
+services:
+
+  prism:
+    container_name: prism
+    image: stoplight/prism:4
+    restart: always
+    command: mock -h 0.0.0.0 -d /data/PetStoreLimited.yaml
+    ports:
+      - 4011:4010
+    volumes: 
+      - ./:/data
+    networks:
+      - internal
+
+  example-chooser:
+    container_name: examplechooser
+    build: 
+      context: .
+      tags: 
+        - examplechooser:local
+    restart: always
+    environment:
+      UPSTREAM_HOST: http://prism:4010
+    ports:
+      - 4010:5000
+    networks:
+      - internal

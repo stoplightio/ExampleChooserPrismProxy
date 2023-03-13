@@ -21,21 +21,21 @@ For the full discussion, see https://github.com/stoplightio/prism/issues/1838.
 ability to dynamically select
 examples](https://docs.stoplight.io/docs/prism/83dbbd75532cf-http-mocking#dynamic-response-generation).
 Some users have requested:
-- more complex example selection logic within Prism, or
-- the ability to select examples based only on query string, or request body
+- More complex example selection logic within Prism, or
+- The ability to select examples based only on query string or request body
   content
 
 So far, these enhancements lie outside the bounds of Prism's goals.
 
-An alternative approach is to add a proxy server which includes this complex
-behavior, and use it to add the necessary `Prefer:` HTTP header to the request
-to Prism.  This approach has several advantages:
-- we don't need a YAML/JSON DSL embedded in OpenAPI documents _suitable to all
+An alternative approach is to add a proxy server that includes this complex
+behavior and use it to add the necessary `Prefer:` HTTP header to the request
+to Prism. This approach has several advantages:
+- We don't need a YAML/JSON DSL embedded in OpenAPI documents _suitable to all
   users_,
-- no need to further complicate [the existing Prism decision
+- No need to further complicate [the existing Prism decision
   engine](https://docs.stoplight.io/docs/prism/83dbbd75532cf-http-mocking#prism-decision-engine)
-  to accomodate partial or contradictory matches, and
-- greater flexibility for a variety of client, server, and network constraints.
+  to accommodate partial or contradictory matches, and
+- Greater flexibility for a variety of client, server, and network constraints.
 
 ## Solution
 
@@ -59,15 +59,15 @@ proxy->>-client: {"id":1, "name":"Tiger"}
 
 ### Quick Start
 
-Start the example-chooser proxy with the following command.  (Later you'll
-probably want the `--detach` option, but omitting it for now makes it easy to
+Start the example-chooser proxy with the following command. (Later you'll
+probably want the `--detach` option, but omitting it now makes it easy to
 see how the proxy interacts with Prism).
 
 ```sh
 docker compose -f docker-compose.yaml up
 ```
 
-In a different terminal, run the following commands.
+In a different terminal, run the following commands:
 
 ```sh
 % curl -s http://localhost:4010/pets/1
@@ -80,7 +80,7 @@ In a different terminal, run the following commands.
 {"id":-14714018,"name":"lorem ipsum"}
 ```
 
-Your docker-compose session should have logged something like the following.
+Your docker-compose session should have logged something like the following:
 
 ```
 [+] Running 2/0
@@ -140,9 +140,7 @@ def example_name(request):
         return None
 ```
 
-Because you have access to the complete [Flask
-Request](https://flask.palletsprojects.com/en/2.2.x/api/#flask.Request).  Prism
-users have expressed interest in varying example responses based on:
+Prism users have expressed interest in varying example responses based on:
 - HTTP headers
 - query parameters
 - request body content
@@ -154,8 +152,8 @@ logic that depends on:
 - matching other properties of pre-made examples to the request
 
 Notice that the container built by [Dockerfile](./Dockerfile) is:
-- **poorly suited to rapid-feedback development**; you'll probably want to use
+- **Poorly suited to rapid-feedback development**; you'll probably want to use
   [Flask's debug mode](https://flask.palletsprojects.com/en/2.2.x/cli/#debug-mode)
   for debugging and/or automatic reloading;
-- **poorly suited to any Internet-facing, public deployment**; this is an
+- **Poorly suited to any Internet-facing, public deployment**; this is an
   internal development tool only.
